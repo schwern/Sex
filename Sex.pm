@@ -3,7 +3,7 @@ package Sex;
 use strict qw(vars subs);
 
 use vars qw($VERSION);
-$VERSION = '0.03';
+$VERSION = '0.69';
 
 my @Grunts = ('Does it get bigger?',
               'I thought eight inches was longer than that.',
@@ -149,7 +149,7 @@ Michael 'The Porn King of CMU' Schwern  <schwern@pobox.com>
 
 'Disco Dolls in Hot Skin'
 
-'Exhaused:  The John Holmes Story'
+'Exhausted:  The John Holmes Story'
 
 'Deep Recursion' starring Ada Lovelace.
 
