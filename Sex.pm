@@ -3,7 +3,7 @@ package Sex;
 use strict qw(vars subs);
 
 use vars qw($VERSION);
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 my @Grunts = ('Does it get bigger?',
               'I thought eight inches was longer than that.',
@@ -129,6 +129,15 @@ Here's another timely example for Sex in the 21st century:
 
 Because of the dire consequences of having sex with URI, one should
 make sure you're well protected.
+
+
+=head1 BUGS
+
+There are many bugs you can get from having Sex used too often on your
+computer.  Please be sure your programs are Safe before they have Sex.
+
+    package Trojan;
+    use Sex qw(Safe Sex);
 
 
 =head1 AUTHOR
