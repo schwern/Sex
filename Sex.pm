@@ -1,12 +1,15 @@
 package Sex;
 
-use vars qw($VERSION);
-$VERSION = '0.01';
+use strict qw(vars subs);
 
-my @grunts = ('Does it get bigger?',
+use vars qw($VERSION);
+$VERSION = '0.02';
+
+my @Grunts = ('Does it get bigger?',
               'I thought eight inches was longer than that.',
               'Baseball...',
               "Let's talk about our relationship.",
+              'Wrong hole, dear.',
               qw(Yes!
                  Oh!
                  Harder!
@@ -21,6 +24,8 @@ my @grunts = ('Does it get bigger?',
               );
 
 sub import {
+    local $| = 1;
+
     my($class) = shift;
     my($caller) = caller;
 
@@ -46,23 +51,25 @@ MASTURBATION
              "Kinky (and illegal in many states).\n";
     }
 
-    
+
+    my %zygote = ();
     my $call_sym_table = \%{$caller.'::'};
-    foreach my $pack (@_) {
-        eval "require $pack";
-        my $sym_table = \%{$pack.'::'};
-
-        my @zygote = grep { rand(2) } keys %$sym_table;
-
-        foreach my $chromo (@zygote) {
-            $call_sym_table->{$chromo} = $sym_table->{$chromo};
-            $| = 1;
-            print $grunts[rand @grunts], " ";
-            select(undef, undef, undef, .7);
+    foreach my $gamete (@_) {
+        eval "require $gamete";
+        while( my($chromo, $rna) = each %{$gamete.'::'} ) {
+            push @{$zygote{$chromo}}, $rna;
         }
-
-
     }
+
+
+    while( my($chromo, $rna) = each %zygote ) {
+        $call_sym_table->{$chromo} = $rna->[rand @$rna];
+        print $Grunts[rand @Grunts], ' ';
+        select(undef, undef, undef, 0.45);
+    }
+
+    push @{$caller.'::ISA'}, @_;
+
     print "\n";
 
     return 'Harry Balls who?';
@@ -80,13 +87,18 @@ Sex - Perl teaches the birds and the bees.
   package Catholicism;
   use Sex qw(strict Religion);
 
+  package Mormonism;
+  use Sex qw(Catholicism Sex);
+
 
 =head1 DESCRIPTION
 
 Heterogeneous recombination of Perl packages.
 
 Given two (or more, I'm a liberal guy) packages, Sex.pm will recombine
-their symbols at random recombining them into the new module.
+their symbols at random recombining them into the new module thus
+providing a cross-section of its functions and global variables.
+It will also push the parent classes onto the child's @ISA array.
 
 So you could do:
 
@@ -94,6 +106,30 @@ So you could do:
     use Sex qw(Net::FTP Net::SSLeay);
 
 And get a secure FTP client!
+
+The recombination occurs in such a way to ensure that the child will
+contain -all- the symbols of both parents.  Should two (or more)
+parents wish to bestow the same symbol on its child one will be chosen
+at random.
+
+For example:
+
+    package DejaNews;
+    use Sex qw(LWP::Simple Net::NNTP);
+
+LWP::Simple and Net::NNTP both have a head() function and thus they
+try to give head() to their child.  Sex.pm will suck the head() off
+either LWP::Simple or Net::NNTP and stick it to DejaNews.  Afterwards,
+DejaNews can procede to finally use its head().
+
+Here's another timely example for Sex in the 21st century:
+
+    package URI::Bot9000;
+    use Sex qw(URI LWP::RobotUA protected);
+
+Because of the dire consequences of having sex with URI, one should
+make sure you're well protected.
+
 
 =head1 AUTHOR
 
@@ -103,6 +139,13 @@ Michael 'The Porn King of CMU' Schwern  <schwern@pobox.com>
 =head1 SEE ALSO
 
 'Disco Dolls in Hot Skin'
+
+'Exhaused:  The John Holmes Story'
+
+'Deep Recursion' starring Ada Lovelace.
+
+'The Fly' (1953)
+
 
 =cut
 
